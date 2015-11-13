@@ -1,0 +1,68 @@
+buildscript {
+    ext {
+        gradlePluginVersion = "1.3.1"
+    }
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${gradlePluginVersion}"
+    }
+
+}
+
+ext {
+    coreVersion = extractVersion(project.properties["version"], false)
+
+    androidVersion = extractVersion(project.properties["version"], true)
+    androidVersionCode = extractVersionCode(project.properties["version"])
+    androidMinSdkVersion = 17
+    androidTargetSdkVersion = 21
+    androidCompileSdkVersion = 23
+    androidBuildToolsVersion = "23.0.1"
+
+    gmsVersion = "8.3.0"
+
+    println("coreVersion = " + coreVersion + ", androidVersion = " + androidVersion + ", androidVersionCode = " + androidVersionCode)
+}
+
+allprojects {
+    group = "edu.nitin.slf4j"
+    version = coreVersion
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+def extractVersion(v, android) {
+    def isSnapshot = v.endsWith("-SNAPSHOT")
+    v = v.replaceAll("-SNAPSHOT", "")
+    def(major, minor, build) = v.tokenize(".")
+
+    def result = major + "." + minor + "." + build
+    if (android) {
+        def commitId = "git rev-parse --short HEAD".execute().text.trim()
+        result += "." + commitId
+    }
+    if (isSnapshot) {
+             result += "-SNAPSHOT"
+    }
+    return result
+}
+
+def extractVersionCode(v) {
+    def isSnapshot = v.endsWith("-SNAPSHOT")
+    v = v.replaceAll("-SNAPSHOT", "")
+    def(major, minor, build) = v.tokenize(".")
+    def code = major.toInteger() * 10000 + minor.toInteger() * 100 + build.toInteger()
+    def commitCount = 0
+    def commitStr = "git rev-list HEAD --count".execute().text.trim()
+    if (!commitStr.isEmpty()) {
+        commitCount = commitStr.toInteger()
+    }
+    code = code * 10000 + commitCount
+    return code
+}

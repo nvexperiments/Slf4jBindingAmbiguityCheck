@@ -1,0 +1,76 @@
+# Profiling Files #
+#############
+*.hprof
+
+# Project Files #
+#################
+.idea
+*.ipr
+*.iml
+.settings
+.project
+.classpath
+*.class
+xuserdata
+xcuserdata
+.pydevproject
+*~
+gen-external-apklibs
+
+# Maven Files #
+###############
+pom.xml.*
+release.properties
+target
+out
+
+# Gradle
+##########
+build/
+.gradle
+
+# Compiled source #
+###################
+*.pyc
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.a
+*.dylib
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.deb
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.err
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+key.properties
+android.jks

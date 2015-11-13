@@ -1,0 +1,81 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${gradlePluginVersion}"
+    }
+}
+
+apply plugin: 'com.android.application'
+
+
+android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+
+        versionName androidVersion
+        versionCode androidVersionCode
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    signingConfigs {
+        release {}
+    }
+
+    buildTypes {
+        release {
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+
+            minifyEnabled false
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFile = new File(
+                            output.outputFile.parent,
+                            output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+                }
+            }
+        }
+        debug {
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
+    }
+
+    publishNonDefault true
+
+    productFlavors {
+        sync{}
+        async{}
+    }
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-android:1.7.7'
+}
+
+def props = new Properties()
+
+props.load(new FileInputStream(project.file("../../key.properties")))
+
+android.signingConfigs.release.storeFile project.file(props.keyStore)
+
+android.signingConfigs.release.storePassword props.keyStorePassword
+
+android.signingConfigs.release.keyAlias props.keyAlias
+
+android.signingConfigs.release.keyPassword props.keyAliasPassword

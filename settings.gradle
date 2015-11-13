@@ -1,0 +1,4 @@
+rootProject.name = 'slf4j-experiments'
+
+include ':apps:slf4j-app'
+

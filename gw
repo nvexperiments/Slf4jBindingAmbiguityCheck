@@ -1,0 +1,4 @@
+#!/bin/sh
+
+gradle -q wrapper -b gw.gradle
+

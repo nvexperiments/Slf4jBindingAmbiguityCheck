@@ -1,0 +1,11 @@
+#!/bin/sh
+curr_pwd=${PWD}
+cd $(dirname $0)
+script_pwd=${PWD}
+
+
+CERTS_DIR=${script_pwd}/../certs
+mkdir -p ${CERTS_DIR}
+rm -rf ${CERTS_DIR}/android.jks
+keytool -keystore ${CERTS_DIR}/android.jks -genkey -alias slf4j.nvexperiments.edu
+ls -la ${CERTS_DIR}
