@@ -25,6 +25,8 @@ android {
 
         versionName androidVersion
         versionCode androidVersionCode
+
+        multiDexEnabled true
     }
 
     lintOptions {
